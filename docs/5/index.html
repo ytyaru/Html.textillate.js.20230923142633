@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="ytyaru">
+<link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja">
+<link rel="icon" href="asset/image/avator.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="lib/textillate/assets/animate.css">
+<!--<link rel="stylesheet" href="lib/textillate/assets/style.css">-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--<script src="lib/jquery/3.7.1/min.js"></script>-->
+<script src="lib/jquery/3.7.1/slim.min.js"></script>
+<script src="lib/textillate/jquery.textillate.js"></script>
+<script src="lib/textillate/assets/jquery.fittext.js"></script>
+<script src="lib/textillate/assets/jquery.lettering.js"></script>
+<script src="js/main.js"></script>
+</head>
+<body>
+    <h1>HTMLタグがどう表示されるか確認する</h1>
+    <p>結論：要素内のテキストのみ抽出して表示している。タグや属性値は無視＆削除。</p>
+    <button id="go" type="button">進む</button>
+    <div data-in-effect="rollIn" data-out-effect="fadeOut">ルビ：<ruby>山田太郎<rp>（</rp><rt>やまだたろう</rt><rp>）</rp></ruby></p>
+    <div data-in-effect="rollIn" data-out-effect="fadeOut"><b>太字</b><i>イタリック</i><u>下線</u><font style="color:red">フォント</font></p>
+    <div data-in-effect="fadeIn" data-out-effect="fadeOut"><ul><li>リスト項目１</li><li>リスト項目２</li></ul></p>
+</body>
+</html>
