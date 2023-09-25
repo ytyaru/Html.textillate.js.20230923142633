@@ -20,7 +20,7 @@
 </head>
 <body>
     <h1>6 メッセージ窓、窓内に表示する単位とタップごとに表示する単位をそれぞれdiv,p,spanにして台本を書く</h1>
-    <button id="go" type="button">進む</button>
+    <button id="go" type="button">進む</button><button id="out" type="button">out</button>
     <div class="message-window"><!-- この中にあるテキストをノベルゲー風に表示したい -->
         <div><!-- この中にあるテキストの表示が全完了したら全消し(scene) -->
             <p>一度のタップで表示するブロック要素。要素ごとに改行される。</p><!-- p要素ごとに入力待ち。最初だけ即表示 -->
@@ -31,5 +31,7 @@
             <p><span>一度のタップで表示するインライン要素。</span><span>要素ごとに改行されず、続けざまに表示される。</span></p>
         </div>
     </div>
+    <p><code>textillate()</code>した要素はHTML構造を作り変えられてしまう。思い通りにならなかった。</p>
+    <p><code>{tap}</code>、<code>{3000}</code>のような入力待機、一定時間待機がしたい。窓内テキストクリアしたい。</p>
 </body>
 </html>
