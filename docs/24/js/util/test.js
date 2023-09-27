@@ -15,7 +15,14 @@ class Test {
             results.push((2<=tests[i].arguments) ? this.assertError(tests[i].arguments[0], tests[i].arguments[1], tests[i]) : tests[i].call())
         }
         */
-        for (let i=0; i<tests.length; i++) { results.push(tests[i].call()) }
+        //for (let i=0; i<tests.length; i++) { results.push(tests[i].call()) }
+        // async関数も混合の場合どうcallするか
+        // https://stackoverflow.com/questions/49982058/how-to-call-an-async-function
+        for (let i=0; i<tests.length; i++) {
+            if (this._isAsync(tests[i])) {
+                tests[i]().then((data) => { results.push(data) })
+            } else { results.push(tests[i].call()) }
+        }
         this.#count(results)
         this.#report(tests, results)
     }
@@ -33,9 +40,10 @@ class Test {
         else if (this._isString(expected)){ if (actual!==expected) { return false } }
         return true
     }
+    // https://qiita.com/anqooqie/items/ce58e530edd9c3f6e690
+    _isAsync(v) { return v.constructor.name === "AsyncFunction" || v.constructor.name === "AsyncGeneratorFunction" }
     static _isString(v) { return 'string'===typeof v || v instanceof String }
     static _isRegExp(v) { return v instanceof RegExp }
-
     assertError(e, msg, method) { return Test.assertError(e, msg, method) }
     /*
     assertError(e, msg, method) {

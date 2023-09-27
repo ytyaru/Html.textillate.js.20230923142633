@@ -109,6 +109,9 @@ class Type {
     isEs(v) { return Array.isArray(v) && v.every(x=>Type.Element(x)) }
     isAs(v) { return Array.isArray(v) && v.every(x=>this.isArray(x)) }
     isOs(v) { return Array.isArray(v) && v.every(x=>this.isObject(x)) }
+
+    // https://qiita.com/anqooqie/items/ce58e530edd9c3f6e690
+    isAsync(v) { return v.constructor.name === "AsyncFunction" || v.constructor.name === "AsyncGeneratorFunction" }
 }
 window.Type = new Type()
 String.prototype.capitalize = function(str) { return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase() }

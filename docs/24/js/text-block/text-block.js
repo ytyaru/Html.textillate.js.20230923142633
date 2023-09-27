@@ -7,13 +7,15 @@
         async fromUrl(url) {
             const res = await fetch(url)
             const text = await res.text()
+            console.log(text)
             return this.fromString(text)
         }
         fromString(str) {
             this.#i = 0
             this.#blocks.splice(0)
             this.#ranges.splice(0)
-            str = str.replace(/(\r?\n){3,}/us, '\n\n'); // 3つ以上連続した改行コードは2つにする
+            //str = str.replace(/(\r?\n){3,}/us, '\n\n'); // 3つ以上連続した改行コードは2つにする
+            str = str.replace(/(\r?\n){3,}/usg, '\n\n'); // 3つ以上連続した改行コードは2つにする
             this.#lines = str.trim().split(/\r?\n/)
             console.debug(str, this.#lines, this.#lines[0].length)
             if (1===this.#lines.length && 0===this.#lines[0].length) { return this }
