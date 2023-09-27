@@ -13,8 +13,9 @@
         fromString(str) {
             this.#i = 0
             this.#blocks.splice(0)
+            this.#ranges.splice(0)
             this.#lines = str.trim().split(/\r?\n/)
-            console.debug(this.#lines, this.#lines[0].length)
+            console.debug(str, this.#lines, this.#lines[0].length)
             if (1===this.#lines.length && 0===this.#lines[0].length) { return this }
             this.#getTextBlockRanges()
             return this
@@ -28,6 +29,7 @@
                 const isPush = ((isBreakBlock) ? ((0 < end-start) ? true : false) : true)
                 //if (isPush) { this.#blocks.push(new TextBlock(start, end)) }
                 if (isPush) { this.#ranges.push([start, end]) }
+                console.log(isBreakBlock, isPush, start, end, this.#ranges)
                 /*
                 if (isPush) {
                     console.log(this.#lines.slice(start, end+1).join('\n').trim().length)
@@ -36,7 +38,7 @@
                 */
                 i = end
             }
-            console.debug(this.#blocks)
+            console.debug(this.#lines.length, this.#ranges)
         }
         #getBlockRangeEnd(start, isBreak=false) {
             for (var i=start; i<this.#lines.length; i++) {

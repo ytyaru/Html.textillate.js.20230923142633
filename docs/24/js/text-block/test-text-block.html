@@ -19,23 +19,35 @@ window.addEventListener('DOMContentLoaded', (event) => {
             console.log(TextBlock.Ranges)
             return Type.isStrings(actual) && 1 === actual.length && '一行のみ'===actual[0]
         },
+        ()=>{ // 二段一行ずつ
+            const actual = TextBlock.fromString('一段目\n\n二段目').gets()
+            console.log(actual)
+            console.log(TextBlock.Ranges)
+            return Type.isStrings(actual) &&
+                    2 === actual.length &&
+                    '一段目'===actual[0] && 
+                    '二段目'===actual[1]
+        },
         ()=>{ // 改行のみ(\n)
             const actual = TextBlock.fromString('\n').gets()
             console.log(actual)
             console.log(TextBlock.Ranges)
-            return Type.isStrings(actual) && 1 === actual.length && ''===actual[0]
+            //return Type.isStrings(actual) && 1 === actual.length && ''===actual[0]
+            return Type.isArray(actual) && 0 === actual.length
         },
         ()=>{ // 改行のみ(バッククォート文字列)
             const actual = TextBlock.fromString(`
 `).gets()
             console.log(actual)
-            return Type.isStrings(actual) && 1 === actual.length && ''===actual[0]
-        }
+            //return Type.isStrings(actual) && 1 === actual.length && ''===actual[0]
+            return Type.isArray(actual) && 0 === actual.length
+        },
         ()=>{ // 改行エスケープのみ(\\n)
             const actual = TextBlock.fromString('\\n').gets()
             console.log(actual)
             console.log(TextBlock.Ranges)
-            return Type.isStrings(actual) && 1 === actual.length && ''===actual[0]
+            //return Type.isStrings(actual) && 1 === actual.length && ''===actual[0]
+            return Type.isArray(actual) && 0 === actual.length
         },
         /*
         ()=>{
