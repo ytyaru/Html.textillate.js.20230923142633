@@ -28,6 +28,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
                     '一段目'===actual[0] && 
                     '二段目'===actual[1]
         },
+        ()=>{ // 二段二行ずつ
+            const actual = TextBlock.fromString('一段一行\n一段二行\n\n二段一行\n二段二行').gets()
+            console.log(actual)
+            console.log(TextBlock.Ranges)
+            return Type.isStrings(actual) &&
+                    2 === actual.length &&
+                    '一段一行\n一段二行'===actual[0] && 
+                    '二段一行\n二段二行'===actual[1]
+        },
         ()=>{ // 改行のみ(\n)
             const actual = TextBlock.fromString('\n').gets()
             console.log(actual)
@@ -47,8 +56,78 @@ window.addEventListener('DOMContentLoaded', (event) => {
             console.log(actual)
             console.log(TextBlock.Ranges)
             //return Type.isStrings(actual) && 1 === actual.length && ''===actual[0]
+            return Type.isStrings(actual) && 1 === actual.length && '\n' === actual[0]
+        },
+        ()=>{ // 改行のみ(\n) 2
+            const actual = TextBlock.fromString('\n\n').gets()
+            console.log(actual)
+            console.log(TextBlock.Ranges)
             return Type.isArray(actual) && 0 === actual.length
         },
+        ()=>{ // 改行のみ(バッククォート文字列) 2
+            const actual = TextBlock.fromString(`
+
+`).gets()
+            console.log(actual)
+            return Type.isArray(actual) && 0 === actual.length
+        },
+        ()=>{ // 改行エスケープのみ(\\n) 2
+            const actual = TextBlock.fromString('\\n\\n').gets()
+            console.log(actual)
+            console.log(TextBlock.Ranges)
+            return Type.isStrings(actual) && 1 === actual.length && '\n\n' === actual[0]
+        },
+        ()=>{ // 前後に改行あってもトリムされる
+            const actual = TextBlock.fromString('\n前後に改行あってもトリムされる\n').gets()
+            console.log(actual)
+            console.log(TextBlock.Ranges)
+            return Type.isStrings(actual) && 1 === actual.length && '前後に改行あってもトリムされる' === actual[0]
+        },
+        ()=>{ // 前後に複数の連続した改行あってもトリムされる
+            const actual = TextBlock.fromString('\n\n前後に複数の連続した改行あってもトリムされる\n\n').gets()
+            console.log(actual)
+            console.log(TextBlock.Ranges)
+            return Type.isStrings(actual) && 1 === actual.length && '前後に複数の連続した改行あってもトリムされる' === actual[0]
+        },
+        ()=>{ // テキスト間に２つより多くの改行が連続していてもひとつのテキストブロックの区切りになる
+            const actual = TextBlock.fromString('テキスト間に２つより多くの改行が連続していても\n\n\nひとつのテキストブロックの区切りになる 3').gets()
+            console.log(actual)
+            console.log(TextBlock.Ranges)
+            return Type.isStrings(actual) && 2 === actual.length && 
+                'テキスト間に２つより多くの改行が連続していても' === actual[0] &&
+                'ひとつのテキストブロックの区切りになる 3' === actual[1]
+        },
+        ()=>{ // テキスト間に２つより多くの改行が連続していてもひとつのテキストブロックの区切りになる
+            const actual = TextBlock.fromString('テキスト間に２つより多くの改行が連続していても\n\n\n\nひとつのテキストブロックの区切りになる 4').gets()
+            console.log(actual)
+            console.log(TextBlock.Ranges)
+            return Type.isStrings(actual) && 2 === actual.length && 
+                'テキスト間に２つより多くの改行が連続していても' === actual[0] &&
+                'ひとつのテキストブロックの区切りになる 4' === actual[1]
+        },
+        ()=>{ // テキスト間に２つより多くの改行が連続していてもひとつのテキストブロックの区切りになる
+            const actual = TextBlock.fromString('テキスト間に２つより多くの改行が連続していても\n\n\n\n\nひとつのテキストブロックの区切りになる 5').gets()
+            console.log(actual)
+            console.log(TextBlock.Ranges)
+            return Type.isStrings(actual) && 2 === actual.length && 
+                'テキスト間に２つより多くの改行が連続していても' === actual[0] &&
+                'ひとつのテキストブロックの区切りになる 5' === actual[1]
+        },
+        ()=>{ // テキスト間に２つより多くの改行が連続していてもひとつのテキストブロックの区切りになる
+            const actual = TextBlock.fromString('テキスト間に２つより多くの改行が連続していても\n\n\n\n\n\nひとつのテキストブロックの区切りになる 6').gets()
+            console.log(actual)
+            console.log(TextBlock.Ranges)
+            return Type.isStrings(actual) && 2 === actual.length && 
+                'テキスト間に２つより多くの改行が連続していても' === actual[0] &&
+                'ひとつのテキストブロックの区切りになる 6' === actual[1]
+        },
+
+
+
+
+
+
+
         /*
         ()=>{
             console.log(TextBlock)

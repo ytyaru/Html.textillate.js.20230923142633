@@ -4,7 +4,6 @@
         #blocks = []
         #ranges = []
         #i = 0
-        #html = []
         async fromUrl(url) {
             const res = await fetch(url)
             const text = await res.text()
@@ -14,6 +13,7 @@
             this.#i = 0
             this.#blocks.splice(0)
             this.#ranges.splice(0)
+            str = str.replace(/(\r?\n){3,}/us, '\n\n'); // 3つ以上連続した改行コードは2つにする
             this.#lines = str.trim().split(/\r?\n/)
             console.debug(str, this.#lines, this.#lines[0].length)
             if (1===this.#lines.length && 0===this.#lines[0].length) { return this }
@@ -22,13 +22,16 @@
         }
         #getTextBlockRanges() {
             let [start, end] = [0, 0]
+            console.log(this.#lines.length, this.#ranges)
             for (var i=0; i<this.#lines.length; i++) {
                 start = i
                 const isBreakBlock = !this.#lines[i]
                 end = this.#getBlockRangeEnd(start, isBreakBlock)
                 const isPush = ((isBreakBlock) ? ((0 < end-start) ? true : false) : true)
-                //if (isPush) { this.#blocks.push(new TextBlock(start, end)) }
+                console.log(i, this.#ranges)
                 if (isPush) { this.#ranges.push([start, end]) }
+                //if (isPush) { this.#blocks.push(new TextBlock(start, end)) }
+//                if (isPush) { this.#ranges.push([start, end]); console.log(i, this.#ranges, [start, end]); }
                 console.log(isBreakBlock, isPush, start, end, this.#ranges)
                 /*
                 if (isPush) {
@@ -47,11 +50,12 @@
             }
             return i
         }
+        #parse(str) { return str.replace(/\\n/g, '\n') }
         //gets() { return this.#ranges.map((r)=>this.#lines.slice(r[0], r[1]+1).join('\n')) }
         //gets() { return this.#ranges.map((r)=>this.#lines.slice(r[0], r[1]+1).join('\n')) }
-        gets() { return this.#ranges.map((r)=>this.#lines.slice(r[0], r[1]+1).join('\n')) }
-        get(i) { return this.#lines.slice(this.#ranges[i][0], this.#ranges[i][1]+1).join('\n') }
-        now() { return this.#lines.slice(this.#ranges[this.i][0], this.#ranges[this.i][1]+1).join('\n') }
+        gets() { return this.#ranges.map((r)=>this.#parse(this.#lines.slice(r[0], r[1]+1).join('\n'))) }
+        get(i) { return this.#parse(this.#lines.slice(this.#ranges[i][0], this.#ranges[i][1]+1).join('\n')) }
+        now() { return this.#parse(this.#lines.slice(this.#ranges[this.i][0], this.#ranges[this.i][1]+1).join('\n')) }
         next() { const s = this.now(); this.i += 1; return s; }
         prev() { const s = this.now(); this.i -= 1; return s; }
         first() { this.seek(0); }
