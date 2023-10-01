@@ -27,9 +27,9 @@
         /*
         #load(url, fn) { return fetch(url).then((res)=>res.text()) }
         #getText(source) {
-            if (Type.isString(source)) { return new Promise((resolutionFn, rejectionFn)=>resolutionFn(source)) }
+            if (Type.isString(source)) { return new Promise((resolve, reject)=>resolve(source)) }
             else if (source instanceof URL) { return this.#load(url) }
-            else { return new Promise((resolutionFn, rejectionFn)=>rejectionFn('引数sourceは文字列またはURL型であるべきです。'))}
+            else { return new Promise((resolve, reject)=>reject('引数sourceは文字列またはURL型であるべきです。'))}
             //else { throw new Error('引数sourceは文字列またはURL型であるべきです。') }
         }
         */
@@ -68,11 +68,11 @@
 
         /*
         #getTextPromise(source) {
-            return new Promise((resolutionFn, rejectionFn)=>{
-                if (Type.isString(source)) { return resolutionFn(source) }
-                else if (source instanceof URL) { return resolutionFn(this.#load(source)) }
-                else { rejectionFn('引数sourceは文字列またはURL型であるべきです。') }
-                //else { rejectionFn(new Error('引数sourceは文字列またはURL型であるべきです。')) }
+            return new Promise((resolve, reject)=>{
+                if (Type.isString(source)) { return resolve(source) }
+                else if (source instanceof URL) { return resolve(this.#load(source)) }
+                else { reject('引数sourceは文字列またはURL型であるべきです。') }
+                //else { reject(new Error('引数sourceは文字列またはURL型であるべきです。')) }
 
                 
             )}
@@ -115,25 +115,34 @@
 
         #load(url, fn) { return fetch(url).then((res)=>res.text()) }
         #getText(source) {
-            console.log('#getText:')
-            if (Type.isString(source)) { console.log('String'); return new Promise((resolutionFn, rejectionFn)=>resolutionFn(source)) }
+//            console.log('#getText:')
+            if (Type.isString(source)) { console.log('String'); return new Promise((resolve, reject)=>resolve(source)) }
             else if (source instanceof URL) { return this.#load(url) }
-            else { return new Promise((resolutionFn, rejectionFn)=>rejectionFn('引数sourceは文字列またはURL型であるべきです。'))}
+            else { return new Promise((resolve, reject)=>reject('引数sourceは文字列またはURL型であるべきです。'))}
             //else { throw new Error('引数sourceは文字列またはURL型であるべきです。') }
         }
-        //gets(source) { this.#getText(source).then((text)=>this.#fromText(text)) }
-        gets(source) {
-            console.log(source)
+        //gets(source) { this.#getText(source).then((text)=>this.fromString(text)) }
+        async getsAsync(source) {
+            const text = await this.#getText(source)
+            return this.fromString(text)
+        }
+        /*
+        getsAsync(source) {
+//            console.log(source)
+//            console.log(this.#getText(source))
+//            console.log(this.#getText(source).then((text)=>console.log(text)))
             //this.#getText(source).then((text)=>{
             return this.#getText(source).then((text)=>{
                 console.log('promise:',text)
-                this.#fromText(text)
-                //return new Promise((resolutionFn, rejectionFn)=>resolutionFn(this.#fromText(text)))
+                //this.fromString(text)
+                return this.fromString(text)
+                //return new Promise((resolve, reject)=>resolve(this.fromString(text)))
             })
         }
+        */
             /*
         gets(source) {
-//            this.#getText(source).then((text)=>this.#fromText(text))
+//            this.#getText(source).then((text)=>this.fromString(text))
             this.#getText(source).then((text)=>{
                 this.#init(text)
                 console.debug(text, this.#lines, this.#lines[0].length)
@@ -154,10 +163,11 @@
             })
         }
             */
-        #fromText(text) {
+        fromString(text) {
             text = this.#init(text)
             console.debug(text, this.#lines, this.#lines[0].length)
             if (1===this.#lines.length && 0===this.#lines[0].length) { return null }
+            //if (1===this.#lines.length && 0===this.#lines[0].length) { return [] }
             this.#getTextBlockRanges()
             return this.#ranges.map((r)=>this.#parse(this.#lines.slice(r[0], r[1]+1).join('\n')))
 
