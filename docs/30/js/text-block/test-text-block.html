@@ -5,11 +5,6 @@
 <script>
 window.addEventListener('DOMContentLoaded', async(event)=>{
     const test = new Test()
-    console.log(TextBlock.fromString('あああ'))
-    console.log(await TextBlock.fromUrl('./test.txt'))
-    //console.log(TextBlock.fromString('あああ').then(blocks=>console.log(blocks)))
-    //console.log(TextBlock.fromString(1).then(blocks=>console.log(blocks)))
-    //console.log(TextBlock.fromString('').then(blocks=>console.log(blocks)))
     test.run([
         // gets()
         ()=>{ // 空文字
@@ -211,10 +206,10 @@ escape(), unescape()関数を使ってもうまくいかなかった。
 要件としてレアケースのため実装しないのが良さそうか。`,
         */
     ]
-    console.log('***********************************', TextBlock.fromString('いいい'))
-    console.log('***********************************', TextBlock.fromUrlIter('./test.txt', true))
-    console.log('***********************************', TextBlock.fromUrlIter('./test.txt', true))
-    console.log('***********************************', (await TextBlock.fromUrlIter('./test.txt', true)))
+    console.log(TextBlock.fromString('あああ'))
+    console.log(TextBlock.fromStringIter('いいい'))
+    console.log(await TextBlock.fromUrl('./test.txt'))
+    console.log(await TextBlock.fromUrlIter('./test.txt', true))
     for (let [block, i] of TextBlock.fromStringIter('あああ\n\nいいい', true)) {
         console.log(i, block)
         //console.assert(block===expecteds[i])
@@ -224,113 +219,6 @@ escape(), unescape()関数を使ってもうまくいかなかった。
         console.log(i, block, expecteds[i])
         console.assert(block===expecteds[i])
     }
-    /*
-    // fromUrl()
-    const lex = await TextBlock.fromUrl('./test.txt')
-    const actual = lex.gets()
-    console.log(actual)
-    console.log(TextBlock.Ranges)
-    console.assert(Type.isStrings(actual))
-    console.assert(10 === actual.length)
-    console.assert('TextBlock（テキストブロック）について。'===actual[0])
-    console.assert('テキストをブロックに分けます。\n改行コード１つの直後に続くテキストは同一ブロック内です。'===actual[1])
-    console.assert('改行コード２つ以上の直後に続くテキストは次の別ブロックです。'===actual[2])
-    console.assert('これは４ブロック目です。\nブロック間にたくさん改行があっても空ブロックができたりはしません。'===actual[3])
-    console.assert('ブロック内で改行表示したいときは改行エスケープします１。\n\nこんなふうにね。'===actual[4])
-    console.assert('ブロック内で改行表示したいときは改行エスケープします２。\n\nこんなふうにね。'===actual[5])
-    console.log(actual[5])
-    console.assert('改行エスケープだけの行は特例としてエスケープした数だけ表示します。\n\nこんなふうにね。\nこれにより台本と出力結果で見た目の行数が一致してわかりやすくなります。'===actual[6])
-    console.log(actual[6])
-    console.assert('改行エスケープは連続できます。\n\n\n\nこんなふうにね。'===actual[7])
-    console.log(actual[7])
-    console.assert('改行エスケープ行は連続しても有効です。\n\n\n\n\nほらね。'===actual[8])
-    console.assert(`残念ながら改行エスケープをエスケープすることはできない。
-\\nのようにバックスラッシュをひとつ多くつけたときにそうしたいのだが、
-正規表現で改行コードに置換するとき、それを表現する方法がわからない。
-escape(), unescape()関数を使ってもうまくいかなかった。
-その関数は非推奨らしい。
-自力実装するのもどうかと思う。
-要件としてレアケースのため実装しないのが良さそうか。`===actual[9])
-    console.log(actual[9])
-
-    const expecteds = [
-        'TextBlock（テキストブロック）について。',
-        'テキストをブロックに分けます。\n改行コード１つの直後に続くテキストは同一ブロック内です。',
-        '改行コード２つ以上の直後に続くテキストは次の別ブロックです。',
-        'これは４ブロック目です。\nブロック間にたくさん改行があっても空ブロックができたりはしません。',
-        'ブロック内で改行表示したいときは改行エスケープします１。\n\nこんなふうにね。',
-        'ブロック内で改行表示したいときは改行エスケープします２。\n\nこんなふうにね。',
-        '改行エスケープだけの行は特例としてエスケープした数だけ表示します。\n\nこんなふうにね。\nこれにより台本と出力結果で見た目の行数が一致してわかりやすくなります。',
-        '改行エスケープは連続できます。\n\n\n\nこんなふうにね。',
-        '改行エスケープ行は連続しても有効です。\n\n\n\n\nほらね。',
-        `残念ながら改行エスケープをエスケープすることはできない。
-\\nのようにバックスラッシュをひとつ多くつけたときにそうしたいのだが、
-正規表現で改行コードに置換するとき、それを表現する方法がわからない。
-escape(), unescape()関数を使ってもうまくいかなかった。
-その関数は非推奨らしい。
-自力実装するのもどうかと思う。
-要件としてレアケースのため実装しないのが良さそうか。`,
-    ]
-    // fromUrlGenAsync(url)
-    console.log('--------- fromUrlGenAsync(url)')
-    for await (let block of lex.fromUrlGenAsync('./test.txt')) { console.log(block) }
-    //for await (let [block, i] of lex.fromUrlGenAsync('./test.txt', true)) { console.assert(expecteds[i]===block) }
-    for await (let [block, i] of lex.fromUrlGenAsync('./test.txt', true)) {
-        console.log(i, block, expecteds[i])
-        console.assert(expecteds[i]===block)
-    }
-    */
-    /*
-    // next()
-    console.log(lex.I)
-    console.log(lex.Ranges[lex.I])
-    console.assert('TextBlock（テキストブロック）について。'===lex.next())
-    console.assert('テキストをブロックに分けます。\n改行コード１つの直後に続くテキストは同一ブロック内です。'===lex.next())
-    console.assert('改行コード２つ以上の直後に続くテキストは次の別ブロックです。'===lex.next())
-    console.assert('これは４ブロック目です。\nブロック間にたくさん改行があっても空ブロックができたりはしません。'===lex.next())
-    console.assert('ブロック内で改行表示したいときは改行エスケープします１。\n\nこんなふうにね。'===lex.next())
-    console.assert('ブロック内で改行表示したいときは改行エスケープします２。\n\nこんなふうにね。'===lex.next())
-    console.assert('改行エスケープだけの行は特例としてエスケープした数だけ表示します。\n\nこんなふうにね。\nこれにより台本と出力結果で見た目の行数が一致してわかりやすくなります。'===lex.next())
-    console.assert('改行エスケープは連続できます。\n\n\n\nこんなふうにね。'===lex.next())
-    console.assert('改行エスケープ行は連続しても有効です。\n\n\n\n\nほらね。'===lex.next())
-    console.log(lex.next())
-    */
-    /*
-    console.assert(`残念ながら改行エスケープをエスケープすることはできない。
-\\nのようにバックスラッシュをひとつ多くつけたときにそうしたいのだが、
-正規表現で改行コードに置換するとき、それを表現する方法がわからない。
-escape(), unescape()関数を使ってもうまくいかなかった。
-その関数は非推奨らしい。
-自力実装するのもどうかと思う。
-要件としてレアケースのため実装しないのが良さそうか。`===lex.next())
-    */
-    /*
-    // prev()
-    console.assert('改行エスケープ行は連続しても有効です。\n\n\n\n\nほらね。'===lex.prev())
-    console.assert(''===lex.prev())
-    console.assert(''===lex.prev())
-    console.assert(''===lex.prev())
-    console.assert(''===lex.prev())
-    console.assert(''===lex.prev())
-    console.assert(''===lex.prev())
-    console.assert(''===lex.prev())
-    console.assert(''===lex.prev())
-    console.assert(''===lex.prev())
-    console.assert(''===lex.prev())
-    console.assert(''===lex.prev())
-    console.assert(''===lex.prev())
-    console.assert(''===lex.prev())
-    console.assert(''===lex.prev())
-    console.assert(''===lex.prev())
-    */
-  
-    /*
-    console.assert('改行エスケープだけの行があると２行分になってしまいます。\n\n\nこんなふうにね。台本の行数と表示側の行数がちがうのでわかりづらい。'===actual[5])
-    console.assert('改行エスケープは連続できます。\n\n\n\n\nこんなふうにね。'===actual[5])
-    console.assert('改行エスケープはテキストの直後に書いても\n有効です。'===actual[6])
-    console.assert('改行エスケープは一行に一つずつ書いても有効です。\n\n\n\n\nほらね。'===actual[7])
-    console.assert('残念ながら改行エスケープをエスケープすることはできない。説明するときにバックスラッシュとnを表示させたいのに……。'===actual[8])
-    */
 })
 </script>
 

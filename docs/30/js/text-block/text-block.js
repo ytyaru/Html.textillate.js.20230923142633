@@ -5,7 +5,7 @@
         #ranges = []
         #i = 0
         #idx = 0
-        async fromUrl(url) { //  : List<String>
+        async fromUrl(url) { // : List<String>
             return this.#gets((await this.#getTextFromUrl(url)))
         }
         fromString(text) { // : List<String>
@@ -46,7 +46,6 @@
                 i = end
             }
         }
-        //async #getTextFromUrl(url) { const res = await fetch(url); return res.text(); }
         #getTextFromUrl(url) { return fetch(url).then(res=>res.text()) }
         #init(text) {
             this.#i = 0
@@ -99,4 +98,3 @@
     }
     window.TextBlock = window.TextBlock || new Lexer()
 })();
-
