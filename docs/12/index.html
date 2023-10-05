@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="ytyaru">
+<link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja">
+<link rel="icon" href="asset/image/avator.png">
+<link rel="stylesheet" href="css/style.css">
+<!--
+<link rel="stylesheet" href="lib/cssanimation/cssanimation.min.css">
+<link rel="stylesheet" href="lib/cssanimation/cssanimation.css">
+-->
+<!--
+<script src="lib/cssanimation/gsap-version/cssanimation-gsap.js"></script>
+<script src="lib/cssanimation/gsap-version/cssanimation-gsap.min.js"></script>
+-->
+<!--
+<script src="lib/cssanimation/letteranimation.min.js"></script>
+<script src="lib/cssanimation/letteranimation.js"></script>
+<script src="js/main.js"></script>
+-->
+<style>
+.cssanimation, .cssanimation span {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+.cssanimation span { display: inline-block }
+.infinite { animation-iteration-count: infinite !important }
+.leFadeIn span { animation-name: leFadeIn }
+@keyframes leFadeIn {
+from { opacity: 0 }
+to { opacity: 1 }
+}
+</style>
+
+<title></title>
+</head>
+<body>
+    <h1>12 cssanimation.css（終了時イベント）</h1>
+    <p class="cssanimation leFadeIn sequence">これはテキスト・アニメーション対象要素です。</p>
+    <p class="cssanimation leFadeIn sequence">順番に表示されるよう制御したい。</p>
+    <p class="cssanimation leFadeIn sequence">改行やHTML要素についても表示できるようにしたい。</p>
+    <script>
+/*
+function animateSequence() {
+    let a = document.getElementsByClassName('sequence');
+    for (let i = 0; i < a.length; i++) {
+        let $this = a[i];
+        let letter = $this.innerHTML;
+        letter = letter.trim();
+        let str = '';
+        let delay = 100;
+        for (l = 0; l < letter.length; l++) {
+            if (letter[l] != ' ') {
+                str += '<span style="animation-delay:' + delay + 'ms; -moz-animation-delay:' + delay + 'ms; -webkit-animation-delay:' + delay + 'ms; ">' + letter[l] + '</span>';
+                delay += 150;
+            } else
+                str += letter[l];
+        }
+        $this.innerHTML = str;
+    }
+}
+*/
+function animateSequence() {
+    for (let el of Array.from(document.getElementsByClassName('sequence'))) {
+        let letter = el.innerHTML.trim();
+        let str = '';
+        let delay = 100;
+        for (l = 0; l < letter.length; l++) {
+            if (letter[l] != ' ') {
+                str += '<span style="animation-delay:' + delay + 'ms; -moz-animation-delay:' + delay + 'ms; -webkit-animation-delay:' + delay + 'ms; ">' + letter[l] + '</span>';
+                delay += 150;
+            } else { str += letter[l] }
+        }
+        el.innerHTML = str;
+        el.querySelector(`span:last-child`).addEventListener("animationend", async(event)=>{
+            console.log('End animated !!')
+        });
+    }
+}
+window.addEventListener('DOMContentLoaded', async(event)=>{
+    animateSequence()
+})
+    </script>
+    <!--
+    <button id="go" type="button">進む</button><button id="out" type="button">out</button>
+
+    <p class="cssanimation leZoomIn sequence">このテキストをアニメーションさせる。</p>
+    <p class="cssanimation leZoomIn sequence">TweenMax版もあるが、どう制御すればよいやら。</p>
+    -->
+</body>
+</html>
