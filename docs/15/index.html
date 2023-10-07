@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="ytyaru">
+<link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja">
+<link rel="icon" href="asset/image/avator.png">
+<link rel="stylesheet" href="css/style.css">
+<!--
+<link rel="stylesheet" href="lib/cssanimation/cssanimation.min.css">
+<link rel="stylesheet" href="lib/cssanimation/cssanimation.css">
+-->
+<!--
+<script src="lib/cssanimation/gsap-version/cssanimation-gsap.js"></script>
+<script src="lib/cssanimation/gsap-version/cssanimation-gsap.min.js"></script>
+-->
+<!--
+<script src="lib/cssanimation/letteranimation.min.js"></script>
+<script src="lib/cssanimation/letteranimation.js"></script>
+<script src="js/main.js"></script>
+-->
+<style>
+.cssanimation, .cssanimation span {
+    animation-play-state: paused;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+.cssanimation span { display: inline-block }
+.infinite { animation-iteration-count: infinite !important }
+.leFadeIn span { animation-name: leFadeIn }
+@keyframes leFadeIn {
+from { opacity: 0 }
+to { opacity: 1 }
+}
+</style>
+
+<title></title>
+</head>
+<body>
+    <h1>13 cssanimation.css（開始ボタン）</h1>
+    <button id="start" type="button">開始</button>
+    <p class="cssanimation leFadeIn sequence">これはテキスト・アニメーション対象要素です。</p>
+    <p class="cssanimation leFadeIn sequence">順番に表示されるよう制御したい。</p>
+    <p class="cssanimation leFadeIn sequence">改行やHTML要素についても表示できるようにしたい。</p>
+    <script>
+function animateSequence() {
+    for (let el of Array.from(document.getElementsByClassName('sequence'))) {
+        let letter = el.innerHTML.trim();
+        let html = '';
+        let delay = 100;
+        for (l = 0; l < letter.length; l++) {
+            html += (' ' === letter[l]) ? letter[l] : `<span style="animation-delay:${delay}ms; -moz-animation-delay:${delay}ms; -webkit-animation-delay:${delay}ms; ">${letter[l]}</span>`;
+            delay += 150
+        }
+        el.innerHTML = html;
+        el.querySelector(`span:last-child`).addEventListener("animationend", async(event)=>{
+            console.log('End animated !!')
+            document.querySelector('#start').disabled = false
+        });
+    }
+}
+function switchAnim() {
+    if ('running'===document.querySelector('.sequence').style.animationPlayState) {
+        for (let el of Array.from(document.querySelectorAll(`.sequence`))) {
+            el.style.animationPlayState = 'paused'
+            for (let span of Array.from(el.querySelectorAll(`span`))) {
+                span.style.animationPlayState = 'paused'
+            }
+        }
+        document.querySelector('#start').textContent = '開始'
+    } else if ('paused'===document.querySelector('.sequence').style.animationPlayState) {
+        for (let el of Array.from(document.querySelectorAll(`.sequence`))) {
+            el.style.animationPlayState = 'running'
+            for (let span of Array.from(el.querySelectorAll(`span`))) {
+                span.style.animationPlayState = 'running'
+            }
+        }
+        document.querySelector('#start').textContent = '停止'
+    } else { }
+}
+window.addEventListener('DOMContentLoaded', async(event)=>{
+    document.querySelector('.sequence').style.animationPlayState = 'paused'
+    animateSequence()
+    document.querySelector('#start').addEventListener('click', async(event)=>{
+        switchAnim()
+    })
+})
+    </script>
+</body>
+</html>
